@@ -1,12 +1,19 @@
 package com.example.demo.exception;
 
 import com.example.demo.dto.respone.ApiRespone;
+import jakarta.validation.ConstraintViolation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.swing.*;
+import java.util.Map;
+import java.util.Objects;
+
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = AppException.class)
@@ -33,10 +40,26 @@ public class GlobalExceptionHandler {
         String errorMessage = exception.getFieldError() != null ?
                 exception.getFieldError().getDefaultMessage() : "Validation Error";
 
+        Map<String,Object> attributes=null;
+        ErrorCode errorCode = ErrorCode.INVALID_KEY;
+
+        var constrainViolation = exception.getBindingResult()
+                .getAllErrors().getFirst().unwrap(ConstraintViolation.class);
+        attributes = constrainViolation.getConstraintDescriptor().getAttributes();
+        log.info(attributes.toString());
         ApiRespone<Void> apiResponse = ApiRespone.<Void>builder()
-                .code(ErrorCode.INVALID_KEY.getCode())
-                .message(errorMessage)
+                .code(errorCode.getCode())
+                .message(Objects.nonNull(attributes) ?
+                  mapAttributes(errorCode.getMessage(),attributes)
+                        : errorCode.getMessage())
                 .build();
         return ResponseEntity.badRequest().body(apiResponse);
     }
+
+    private String mapAttributes(String message, Map<String,Object> attributes){
+        String minValue = String.valueOf(attributes.get("min"));
+
+        return message.replace("{min}",minValue);
+    }
+
 }

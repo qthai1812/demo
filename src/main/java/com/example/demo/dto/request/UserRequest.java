@@ -13,7 +13,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserRequest {
      String username;
-     @Size(min = 6,message = "password at least 6 characters")
+     @Size(min = 6,message = "password at least 8 characters")
      String password;
      String firstname;
      String lastname;
