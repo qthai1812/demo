@@ -29,8 +29,6 @@ public class AuthController {
     @PostMapping
     ApiRespone<AuthRespone> authUser(@RequestBody AuthRequest authRequest){
 
-
-
         return ApiRespone.<AuthRespone>builder()
                 .result(authService.authUser(authRequest))
                 .build();
@@ -42,6 +40,15 @@ public class AuthController {
        return ApiRespone.<IntrospectRespone>builder()
                .result(authService.authToken(introspectRequest))
                .build();
+    }
+
+    @PostMapping("/token/logout")
+    ApiRespone<Void> logoutToken(@RequestBody IntrospectRequest introspectRequest)
+            throws ParseException, JOSEException
+    {
+        authService.logout(introspectRequest);
+        return ApiRespone.<Void>builder()
+                .build();
     }
 
 }

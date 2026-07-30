@@ -56,6 +56,7 @@ public class UserController {
         // 4. Log ra màn hình console
         log.info("User đang đăng nhập là: {}", username);
         log.info("Các quyền của user này: {}", authorities);
+        log.info("ID cua user nay: {}",authentication.getDetails());
 
         return ApiRespone.<List<UserRespone>>builder()
                 .result(userService.getAllUsers())
