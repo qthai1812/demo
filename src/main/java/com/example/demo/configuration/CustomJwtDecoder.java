@@ -29,7 +29,7 @@ public class CustomJwtDecoder implements JwtDecoder {
     @Override
     public Jwt decode(String token) throws JwtException {
         try{
-            authService.vertifyToken(token);
+            authService.vertifyToken(token,false);
         }
         catch (Exception e){
             throw new JwtException((e.getMessage()));

@@ -4,7 +4,6 @@ import com.example.demo.dto.request.UserRequest;
 import com.example.demo.dto.respone.ApiRespone;
 import com.example.demo.dto.respone.UserRespone;
 import com.example.demo.service.UserService;
-import com.nimbusds.jose.proc.SecurityContext;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +18,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
-
     private final UserService userService;
-
     @PostMapping
     public ApiRespone<UserRespone> createUser(@RequestBody @Valid UserRequest request) {
-
-
 
         return ApiRespone.<UserRespone>builder()
                 .result(userService.createUser(request))
