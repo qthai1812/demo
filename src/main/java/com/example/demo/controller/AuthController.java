@@ -50,5 +50,14 @@ public class AuthController {
         return ApiRespone.<Void>builder()
                 .build();
     }
+    @PostMapping("/token/refresh")
+    ApiRespone<AuthRespone> rereshToken(@RequestBody IntrospectRequest introspectRequest)
+            throws ParseException, JOSEException
+    {
+
+        return ApiRespone.<AuthRespone>builder()
+                .result(authService.refresh(introspectRequest))
+                .build();
+    }
 
 }
