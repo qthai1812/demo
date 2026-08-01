@@ -3,10 +3,9 @@ package com.example.demo.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import java.util.Set;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Set;
 
 @Entity
 @Getter
@@ -16,10 +15,8 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Role {
-    @Id
-    String name;
-    String description;
+  @Id String name;
+  String description;
 
-    @ManyToMany
-    Set<Permission> permission;
+  @ManyToMany Set<Permission> permission;
 }

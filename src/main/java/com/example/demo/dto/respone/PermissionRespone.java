@@ -9,6 +9,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PermissionRespone {
-    String name;
-    String description;
+  String name;
+  String description;
 }

@@ -1,7 +1,6 @@
 package com.example.demo.exception;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
@@ -10,10 +9,10 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 public class AppException extends RuntimeException {
-   ErrorCode errorCode;
-   public AppException(ErrorCode errorCode){
-      super(errorCode.getMessage());
-      this.errorCode=errorCode;
-   }
+  ErrorCode errorCode;
 
+  public AppException(ErrorCode errorCode) {
+    super(errorCode.getMessage());
+    this.errorCode = errorCode;
+  }
 }

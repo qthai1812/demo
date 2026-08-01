@@ -2,10 +2,9 @@ package com.example.demo.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import java.util.Date;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Date;
 
 @Entity
 @Getter
@@ -15,7 +14,6 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class InvalidToken {
-    @Id
-    String id;
-    Date expiryTime;
+  @Id String id;
+  Date expiryTime;
 }
