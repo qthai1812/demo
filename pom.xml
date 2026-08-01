@@ -230,6 +230,30 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>2.43.0</version> <!-- Bạn có thể cập nhật version mới nhất -->
+				<configuration>
+					<java>
+						<!-- Áp dụng chuẩn Google Java Format -->
+						<googleJavaFormat/>
+
+						<!-- Xóa các import không sử dụng -->
+						<removeUnusedImports/>
+					</java>
+				</configuration>
+				<!-- (Tùy chọn) Tự động check format mỗi khi build -->
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 

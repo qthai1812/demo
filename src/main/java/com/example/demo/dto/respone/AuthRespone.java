@@ -10,6 +10,6 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthRespone {
-    String token;
-    boolean authented;
+  String token;
+  boolean authented;
 }

@@ -1,11 +1,10 @@
 package com.example.demo.dto.respone;
 
 import com.example.demo.entity.Role;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import java.time.LocalDate;
 import java.util.Set;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
@@ -13,10 +12,10 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserRespone {
-    String id;
-    String username;
-    String firstname;
-    String lastname;
-    LocalDate dob;
-    Set<Role> roles;
+  String id;
+  String username;
+  String firstname;
+  String lastname;
+  LocalDate dob;
+  Set<Role> roles;
 }

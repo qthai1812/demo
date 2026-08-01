@@ -5,28 +5,29 @@ import com.example.demo.exception.ErrorCode;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import tools.jackson.databind.ObjectMapper;
-import java.io.IOException;
 
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        ErrorCode errorCode = ErrorCode.USER_NOT_AUTHENTED;
+  @Override
+  public void commence(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      AuthenticationException authException)
+      throws IOException, ServletException {
+    ErrorCode errorCode = ErrorCode.USER_NOT_AUTHENTED;
 
-        response.setStatus(errorCode.getStatusCode().value());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+    response.setStatus(errorCode.getStatusCode().value());
+    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        ApiRespone<?> apiRespone = ApiRespone.builder()
-                .code(errorCode.getCode())
-                .message(errorCode.getMessage())
-                .build();
-        ObjectMapper objectMapper = new ObjectMapper();
+    ApiRespone<?> apiRespone =
+        ApiRespone.builder().code(errorCode.getCode()).message(errorCode.getMessage()).build();
+    ObjectMapper objectMapper = new ObjectMapper();
 
-        response.getWriter().write(objectMapper.writeValueAsString(apiRespone));
-        response.flushBuffer();
-    }
+    response.getWriter().write(objectMapper.writeValueAsString(apiRespone));
+    response.flushBuffer();
+  }
 }

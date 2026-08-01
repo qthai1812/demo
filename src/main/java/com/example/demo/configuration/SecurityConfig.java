@@ -1,7 +1,6 @@
 package com.example.demo.configuration;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,47 +12,51 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final String[] Public_EndPoints = {"/users","/auth","/auth/token","/auth/token/logout","/auth/token/refresh"};
+  private final String[] Public_EndPoints = {
+    "/users", "/auth", "/auth/token", "/auth/token/logout", "/auth/token/refresh"
+  };
 
-    private final String[] Public_EndPoints_ADMIN = {"/users"};
+  private final String[] Public_EndPoints_ADMIN = {"/users"};
 
-    private final CustomJwtDecoder customJwtDecoder;
+  private final CustomJwtDecoder customJwtDecoder;
 
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+    httpSecurity.authorizeHttpRequests(
+        request ->
+            request
+                .requestMatchers(HttpMethod.POST, Public_EndPoints)
+                .permitAll()
+                .anyRequest()
+                .authenticated());
+    httpSecurity.oauth2ResourceServer(
+        oauth2 ->
+            oauth2
+                .jwt(
+                    jwtConfigurer ->
+                        jwtConfigurer
+                            .decoder(customJwtDecoder)
+                            .jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                .authenticationEntryPoint(new JwtAuthenticationEntryPoint()));
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity)
-        throws Exception{
-        httpSecurity.authorizeHttpRequests(
-                request ->
-                         request.requestMatchers(HttpMethod.POST,Public_EndPoints).permitAll()
+    httpSecurity.csrf(AbstractHttpConfigurer::disable);
+    return httpSecurity.build();
+  }
 
-                                .anyRequest().authenticated());
-        httpSecurity.oauth2ResourceServer(
-                oauth2-> oauth2.jwt(
-                        jwtConfigurer ->  jwtConfigurer.decoder(customJwtDecoder)
-                                .jwtAuthenticationConverter(jwtAuthenticationConverter()))
-                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-                );
+  @Bean
+  JwtAuthenticationConverter jwtAuthenticationConverter() {
+    JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter =
+        new JwtGrantedAuthoritiesConverter();
+    jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
 
-        httpSecurity.csrf(AbstractHttpConfigurer::disable);
-        return httpSecurity.build();
-    }
-
-    @Bean
-    JwtAuthenticationConverter jwtAuthenticationConverter(){
-        JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
-
-        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
-        return jwtAuthenticationConverter;
-    }
-
+    JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+    jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
+    return jwtAuthenticationConverter;
+  }
 }
